@@ -1,0 +1,45 @@
+<html>
+    <head> 
+        <title class="changeable-head"> portion_guide </title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="portion_guide.js"></script>
+    </head>
+    <body>
+        <div id="main-body">
+            <h2> Pet Food Portioning</h2>
+            <body class = "content-section">
+                <div id="type-select">
+                    <button id="dry-food">Dry Food</button>
+                    <button id="wet-food">Wet Food</button>
+                </div>
+                <div id="measurement">
+                    <p id="measurement-value"> null grams </p>
+                    <p id="food-name">Pet Food Brand</p>
+                    <label for="pet-weight">Pet Weight (kg):</label>
+                    <input type="number" min="0" step="0.1" id="pet-weight" name="pet-weight"><br>
+                </div>
+                <div id="data-processing">
+                    <h3> Data Processing </h3>
+                    <button id="select-food">Select Food</button>
+                    <button id="scan-food">Scan Food Nutrition</button>
+                    <button id="enter-manually" onclick="document.getElementById('enter-manual-dialog').showModal()">Enter Manually</button>
+                </div>
+
+                <!-- TODO: Convert to custom popup box with JS -->
+                <dialog id="enter-manual-dialog">
+                    <h3> Enter manually: </h3>
+                    <label for="pet-weight-calculation">Minimum Pet Weight (kg):</label>
+                    <input type="number" min="0" step="1" id="pet-weight-calculation" name="pet-weight-calculation"><br>
+                    <label for="recommended-serving">Recommended Serving (g):</label>
+                    <input type="number" min="0" step="1" id="recommended-serving" name="recommended-serving"><br>
+                    <button id="enter-manual-cancel" onclick="document.getElementById('enter-manual-dialog').close()">Cancel</button>
+                    <button id="enter-manual-okay">Enter</button>
+                </dialog>
+                <div id="enter-manual-popup" class="popup">
+                </div>
+
+            </body>
+        </div>
+    </body>
+</html>

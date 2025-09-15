@@ -12,7 +12,7 @@ const page_states = {
 $(document).ready(function() {
     const storedPageState = JSON.parse(sessionStorage.getItem("pageState"));
     // Check if page is refreshed while in-use. Initialize new session if not.
-    if (storedPageState){
+    if (storedPageState && history.state){
         // Load saved state.
         load_page(storedPageState.current_state.page, storedPageState.current_state.page_id);
 
@@ -23,15 +23,8 @@ $(document).ready(function() {
         history.replaceState(page_states,'',"");
 
         console.log('Initial history state set:', history.state);
-
-        // Add listener for popstate events.
-        window.addEventListener("popstate", (event) => {
-            if (event.state) {
-                load_page(page_states.previous_state.page, page_states.previous_state.page_id);
-            }
-        })
         // Initialize default page.
-        load_page("feeding_schedule", 1);
+        load_page("portion_guide", 1);
     }
 })
 
@@ -39,6 +32,14 @@ $(document).ready(function() {
 // Initialize buttons.
 const nav_buttons = document.querySelectorAll(".nav-button");
 
+// Add listener for popstate events.
+window.addEventListener("popstate", (event) => {
+    if (event.state) {
+        load_page(page_states.previous_state.page, page_states.previous_state.page_id);
+
+        console.log("Browser previous button clicked.");
+    }
+})
 nav_buttons.forEach(button => {
     button.addEventListener('click', function() {
         open_page(button.id);
@@ -48,12 +49,8 @@ nav_buttons.forEach(button => {
 
 function open_page(feature_to_select) {
     switch(feature_to_select){
-        case "feeding-schedule-button":
-            // $("#head").load("feeding_schedule.html #head");
-            // $("#main-body").load("feeding_schedule.html #main-body");
-            // window.history.pushState({page: 'feeding-schedule', page_id: "1"}, "", "/feeding_schedule.html");
-            // console.log("History state changed:", history.state);
-            load_page("feeding_schedule", 1);
+        case "portion-guide-button":
+            load_page("portion_guide", 1);
             return false;
         default:
             console.log("Error!");
@@ -70,6 +67,9 @@ function load_page(page_name, page_id){
     // Load new pages.
     $("#head").load(page_name + ".html #changeable-head");
     $("#main-body").load(page_name + ".html #main-body");
+    // Load related JavaScript.
+    document.getElementById("dynamicScript").src = page_name + ".js";
+
 
     // Save the new page states as current.
     window.history.pushState({page: page_name, page_id: page_id}, "");
