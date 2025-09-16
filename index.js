@@ -65,11 +65,14 @@ function load_page(page_name, page_id){
     page_states.previous_state.page_id = history.state.page_id;
 
     // Load new pages.
-    $("#head").load(page_name + ".html #changeable-head");
-    $("#main-body").load(page_name + ".html #main-body");
-    // Load related JavaScript.
-    document.getElementById("dynamicScript").src = page_name + ".js";
-
+    $("#main-body").load(page_name + ".html #main-body", function () {
+                $.getScript(page_name + ".js", function(jqxhr, settings, exception) {
+            console.log(page_name + ".js loaded!");
+        })
+        .fail(function(jqxhr, settings, exception) {
+            console.error("Error loading: " + page_name + ".js");
+        })
+    });
 
     // Save the new page states as current.
     window.history.pushState({page: page_name, page_id: page_id}, "");
